@@ -13,4 +13,4 @@ def read_cost(file_name):
 
 
 if __name__ == '__main__':
-    print(read_cost('./cost_file.json'))
+    print(read_cost('../cost_file.json'))

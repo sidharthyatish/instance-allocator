@@ -3,7 +3,7 @@ from cost_file_reader import read_cost
 instances_cpu_dict = {"large": 1, "xlarge": 2, "2xlarge": 4, "4xlarge": 8, "8xlarge": 16, "10xlarge": 32}
 
 
-def instances_for_given_hour(region_dict, hours, max_price):
+def instances_for_given_price(region_dict, hours, max_price):
     """
 
     :param region_dict:
@@ -149,6 +149,6 @@ def instances_for_given_cpu_count(region_dict, hours, num_of_cpu):
 
 
 if __name__ == '__main__':
-    region_dict_input = read_cost('./cost_file.json')
-    print(instances_for_given_hour(region_dict_input, 3, 40))
+    region_dict_input = read_cost('../cost_file.json')
+    print(instances_for_given_price(region_dict_input, 3, 40))
     print(instances_for_given_cpu_count(region_dict_input, 3, 115))
