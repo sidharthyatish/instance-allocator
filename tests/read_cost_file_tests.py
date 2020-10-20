@@ -26,7 +26,7 @@ class InstanceAllocatorTests(unittest.TestCase):
     # Instance allocator for max price and hours only
     def test_getting_instance_count_for_valid_hours_and_valid_max_price_returns_proper_output(self):
         self.assertEqual(instance_allocator.instances_for_given_hour(self.region_dict, 3, 5), [{'region': 'us-east',
-                                                                                                'total_cost': '$4.800000000000001',
+                                                                                                'total_cost': '$4.8',
                                                                                                 'servers': [
                                                                                                     ('large', 2),
                                                                                                     ('xlarge', 2), (
@@ -38,6 +38,62 @@ class InstanceAllocatorTests(unittest.TestCase):
                                                                                                          "cost must be "
                                                                                                          "greater than "
                                                                                                          "zero"}])
+
+    def test_getting_instance_count_for_negative_hours_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_hour(self.region_dict, -1, 1),
+                         [{'ERROR': "Price and/or "
+                                    "cost must be "
+                                    "greater than "
+                                    "zero"}])
+
+    def test_getting_instance_count_for_zero_price_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_hour(self.region_dict, 10, 0),
+                         [{'ERROR': "Price and/or "
+                                    "cost must be "
+                                    "greater than "
+                                    "zero"}])
+
+    def test_getting_instance_count_for_negative_price_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_hour(self.region_dict, 5, -1),
+                         [{'ERROR': "Price and/or "
+                                    "cost must be "
+                                    "greater than "
+                                    "zero"}])
+
+    # Instance allocator given number of CPUs and hours
+    def test_getting_instance_count_for_valid_hours_and_valid_cpu_count_returns_proper_output(self):
+        self.assertEqual(instance_allocator.instances_for_given_cpu_count(self.region_dict, 3, 5),
+                         [{'region': 'us-east',
+                           'servers': [('large', 1), ('2xlarge', 1)],
+                           'total_cost': '$1.71'}])
+
+    def test_getting_instance_count_with_valid_cpu_count_for_zero_hours_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_cpu_count(self.region_dict, 0, 1),
+                         [{'ERROR': "Price and/or "
+                                    "CPU count must be "
+                                    "greater than "
+                                    "zero"}])
+
+    def test_getting_instance_count_with_valid_cpu_count_for_negative_hours_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_cpu_count(self.region_dict, -1, 1),
+                         [{'ERROR': "Price and/or "
+                                    "CPU count must be "
+                                    "greater than "
+                                    "zero"}])
+
+    def test_getting_instance_count_with_valid_hours_and_zero_cpu_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_cpu_count(self.region_dict, 3, 0),
+                         [{'ERROR': "Price and/or "
+                                    "CPU count must be "
+                                    "greater than "
+                                    "zero"}])
+
+    def test_getting_instance_count_with_valid_hours_and_negative_cpu_returns_error(self):
+        self.assertEqual(instance_allocator.instances_for_given_cpu_count(self.region_dict, 4, -1),
+                         [{'ERROR': "Price and/or "
+                                    "CPU count must be "
+                                    "greater than "
+                                    "zero"}])
 
 
 if __name__ == '__main__':
