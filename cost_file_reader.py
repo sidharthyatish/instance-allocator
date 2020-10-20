@@ -9,7 +9,7 @@ def read_cost(file_name):
     except FileNotFoundError:
         return {"ERROR": "File not found"}
     except ValueError:
-        return {"ERROR" : "Invalid input data"}
+        return {"ERROR": "Invalid input data"}
 
 
 if __name__ == '__main__':
