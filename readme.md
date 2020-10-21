@@ -23,7 +23,8 @@ Examples:
 ``python3 main.py -hours 5 -cpu 30 -price 40.5``  
 ``python3 main.py -hours 5 -price 40.5``   
 
-The instances cost is available in ``cost_file.json`` file.
+The instances cost is available in ``cost_file.json`` file.  
+``python3 main.py -h`` Displays help message
 
 ## Running tests
 I have included two test files
