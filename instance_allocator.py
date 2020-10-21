@@ -18,7 +18,7 @@ def instances_for_given_price(region_dict, hours, max_price):
 
     # hours and max price must be greater than zero
     if hours <= 0 or max_price <= 0:
-        result.append({"ERROR": "Price and/or cost must be greater than zero"})
+        result.append({"ERROR": "Hours and/or cost must be greater than zero"})
         return result
 
     # Calculate the number of servers for each region
@@ -91,7 +91,7 @@ def instances_for_given_cpu_count(region_dict, hours, num_of_cpu):
 
     # hours and CPU must be greater than zero
     if hours <= 0 or num_of_cpu <= 0:
-        result.append({"ERROR": "Price and/or CPU count must be greater than zero"})
+        result.append({"ERROR": "Hours and/or CPU count must be greater than zero"})
         return result
 
     # I can find the number of instances with the given CPU count for one hour. The same count would be applicable
