@@ -1,4 +1,3 @@
-from cost_file_reader import read_cost
 
 instances_cpu_dict = {"large": 1, "xlarge": 2, "2xlarge": 4, "4xlarge": 8, "8xlarge": 16, "10xlarge": 32}
 
@@ -6,9 +5,9 @@ instances_cpu_dict = {"large": 1, "xlarge": 2, "2xlarge": 4, "4xlarge": 8, "8xla
 def instances_for_given_price(region_dict, hours, max_price):
     """
 
-    :param region_dict:
-    :param hours:
-    :param max_price:
+    :param region_dict: dict of regions having the available instances and their costs
+    :param hours: number of hours for which the instances are requested
+    :param max_price: Maximum price the user is willing to pay
     :return: The number of servers for each region and their total costs
 
     We can find the number of servers required for an hour. The same number of servers would be used for the
@@ -79,9 +78,9 @@ def instances_for_given_price(region_dict, hours, max_price):
 def instances_for_given_cpu_count(region_dict, hours, num_of_cpu):
     """
 
-    :param region_dict:
-    :param hours:
-    :param num_of_cpu:
+    :param region_dict: dict of regions having the available instances and their costs
+    :param hours:  number of hours for which the instances are requested
+    :param num_of_cpu: The minimum number of CPUs requested
     :return: The number of servers for each region and their total costs
 
     We can find the number of servers satisfying the given CPU count for an hour. The same number of servers would be
@@ -149,6 +148,17 @@ def instances_for_given_cpu_count(region_dict, hours, num_of_cpu):
 
 
 def instances_for_given_cpu_and_price(region_dict, hours, num_of_cpu, max_price):
+    """
+
+    :param region_dict: dict of regions having the available instances and their costs
+    :param hours: number of hours for which the instances are requested
+    :param num_of_cpu: The minimum number of CPUs requested
+    :param max_price: Maximum price the user is willing to pay
+    :return: List of instances and their count for each region and their total costs per region
+
+    We find the number of instances that satisfy the CPU count and price limit for an hour. These servers would be used
+    for the remaining hours as well
+    """
     result = []
 
     # hours and CPU must be greater than zero
@@ -206,6 +216,7 @@ def instances_for_given_cpu_and_price(region_dict, hours, num_of_cpu, max_price)
 
 
 if __name__ == '__main__':
+    from cost_file_reader import read_cost
     region_dict_input = read_cost('./cost_file.json')
     print(instances_for_given_price(region_dict_input, 3, 30))
     print(instances_for_given_cpu_count(region_dict_input, 3, 115))
