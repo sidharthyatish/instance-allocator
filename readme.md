@@ -7,8 +7,14 @@ The program gives the number of instances that can be allocated based on three s
 
 The result contains the total cost per region and the allocated number of instances and their count
 
+## Requirements
+python : version 3
+
 ## How to run
+If your default python version is 3, you can use ``python`` instead of ``python3``  
+
 ``python3 main.py -hours <num_of_hours> -cpu <num_of_cpus> -price <max_price> ``  
+
 The ``-hours`` option is mandatory
 Instances can be requested in a combination of hours with cpu, or price or both
 
