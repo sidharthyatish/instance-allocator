@@ -194,6 +194,7 @@ def instances_for_given_cpu_and_price(region_dict, hours, num_of_cpu, max_price)
             current_instance_cost = instances_cost_dict[current_instance]
             current_instance_cpu = instances_cpu_dict[current_instance]
 
+            # The instance is included only if it satisfies the CPU as well as cost
             if current_instance_cpu <= number_of_cpu_per_region and current_instance_cost <= max_price_for_one_hour:
                 number_of_cpu_per_region = number_of_cpu_per_region - current_instance_cpu
                 max_price_for_one_hour = max_price_for_one_hour - current_instance_cost
@@ -201,6 +202,8 @@ def instances_for_given_cpu_and_price(region_dict, hours, num_of_cpu, max_price)
                 server_count_dict[current_instance] = server_count_dict[current_instance] + 1
             elif instance_index == 0:
                 break
+
+            # Going through instances index in round robin
             instance_index = instance_index - 1 if instance_index >= 1 else len(instances_list) - 1
 
         per_region_result["region"] = region

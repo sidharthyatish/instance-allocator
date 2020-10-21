@@ -28,5 +28,5 @@ The instances cost is available in ``cost_file.json`` file.
 ## Running tests
 I have included two test files
 ``test.py`` runs fine with pycharm IDE but unable to via terminal as it is unable to resolve paths  
-As a workaround I have included another test file that can be run from terminal
+As a workaround I have included another test file that can be run from project root in terminal  
 ``python3 -m unittest tests/tests_terminal.py``  
