@@ -148,7 +148,65 @@ def instances_for_given_cpu_count(region_dict, hours, num_of_cpu):
     return result
 
 
+def instances_for_given_cpu_and_price(region_dict, hours, num_of_cpu, max_price):
+    result = []
+
+    # hours and CPU must be greater than zero
+    if hours <= 0 or num_of_cpu <= 0 or max_price <= 0:
+        result.append({"ERROR": "Hours, CPU count and price must be greater than zero"})
+        return result
+
+    # I can find the number of instances with the given CPU count for one hour. The same count would be applicable
+    # for remaining hours as well
+    regions = region_dict.keys()
+
+    for region in regions:
+        # print("REGION : " + region)
+        number_of_cpu_per_region = num_of_cpu
+        server_count_dict = {}
+        per_region_result = {"region": "", "total_cost": "", "servers": []}
+        instances_cost_dict = region_dict[region]
+        instances_list = list(instances_cost_dict.keys())
+
+        # Initialising the count of each instances to zero
+        for each_instance in instances_list:
+            server_count_dict[each_instance] = 0
+
+        price_for_one_hour = 0
+
+        instance_index = len(instances_list) - 1
+
+        # I can considering the max price for hour and allocate instances.
+        max_price_for_one_hour = max_price / hours
+
+        while number_of_cpu_per_region >= 0 and max_price_for_one_hour >= 0:
+            current_instance = instances_list[instance_index]
+            current_instance_cost = instances_cost_dict[current_instance]
+            current_instance_cpu = instances_cpu_dict[current_instance]
+
+            if current_instance_cpu <= number_of_cpu_per_region and current_instance_cost <= max_price_for_one_hour:
+                number_of_cpu_per_region = number_of_cpu_per_region - current_instance_cpu
+                max_price_for_one_hour = max_price_for_one_hour - current_instance_cost
+                price_for_one_hour = price_for_one_hour + current_instance_cost
+                server_count_dict[current_instance] = server_count_dict[current_instance] + 1
+            elif instance_index == 0:
+                break
+            instance_index = instance_index - 1 if instance_index >= 1 else len(instances_list) - 1
+
+        per_region_result["region"] = region
+        per_region_result["total_cost"] = '$' + str(round(price_for_one_hour * hours, 2))
+        for server, count in server_count_dict.items():
+            if count > 0:
+                per_region_result["servers"].append((server, count))
+
+        result.append(per_region_result)
+
+    result = sorted(result, key=lambda x: x['total_cost'])
+    return result
+
+
 if __name__ == '__main__':
-    region_dict_input = read_cost('../cost_file.json')
-    print(instances_for_given_price(region_dict_input, 3, 40))
+    region_dict_input = read_cost('./cost_file.json')
+    print(instances_for_given_price(region_dict_input, 3, 30))
     print(instances_for_given_cpu_count(region_dict_input, 3, 115))
+    print(instances_for_given_cpu_and_price(region_dict_input, 4, 100, 40))
